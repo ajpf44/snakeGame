@@ -32,6 +32,6 @@ public abstract class SnakePart {
 	public void paintComponent(Graphics g){	
 	    g.setColor(this.color); // Set the color to red
 	    g.fillRect(posX, posY, 50, 50);
-	    //asdddasd
+	    //asdddasdads
 	}
 }
