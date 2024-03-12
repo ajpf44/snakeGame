@@ -13,6 +13,19 @@ public abstract class SnakePart {
 		color = partColor;
 	}
 	
+	public void setPosition(int x, int y) {
+		this.posX = x;
+		this.posY = y;
+	}
+	
+	public int getX() {
+		return this.posX;
+	}
+	
+	public int getY() {
+        return this.posY;
+    }
+	
 	public void moveX(int sinal) {
 		int newPosX = posX + (sinal * Movement.speed);
 		//Na volta testar o getWidth e o getHeight;
@@ -32,6 +45,5 @@ public abstract class SnakePart {
 	public void paintComponent(Graphics g){	
 	    g.setColor(this.color); // Set the color to red
 	    g.fillRect(posX, posY, 50, 50);
-	    //asdddasdads
 	}
 }

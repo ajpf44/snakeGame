@@ -14,13 +14,16 @@ import javax.swing.JPanel;
 
 import gameObjects.Apple;
 import gameObjects.SnakeHead;
+import gameObjects.SnakeBody;
 import gameObjects.Movement;
 
 
-public class GamePanel extends JPanel implements KeyListener {
+public class GamePanel extends JPanel implements KeyListener{
 	
 	SnakeHead snakeHead = new SnakeHead(0,0,Color.red);
+	
 	ArrayList<Apple> appleList = new ArrayList<Apple>();
+	ArrayList<SnakeBody> snakeBodyList = new ArrayList<SnakeBody>();
 	
 	public void createApple() {
 		int x = (int) (Math.random() * 15);
@@ -37,11 +40,26 @@ public class GamePanel extends JPanel implements KeyListener {
 	    for(Apple a : appleList) {
             a.paintComponent(g);
         }
+	    for(SnakeBody sb : snakeBodyList) {
+	    	sb.paintComponent(g);
+	    }
 	     // Draw a rectangle with specific coordinates and dimensions
 	}
     
 	//Talvez passar essa função para o Movement
     public void moveFromKey() {
+    	int headPosX = snakeHead.getX();
+    	int headPosY = snakeHead.getY();
+    	
+    	for(int i = snakeBodyList.size()-1; i  >= 0; --i) {
+    		SnakeBody sb = snakeBodyList.get(i);
+    		if(i == 0) {
+    			sb.setPosition( headPosX, headPosY);
+    		}else {
+    			SnakeBody sbBefore = snakeBodyList.get(i-1);
+    			sb.setPosition(sbBefore.getX(), sbBefore.getY());
+    		}
+    	}
     	
     	if (keyToMove.getKeyCode() == KeyEvent.VK_RIGHT) {
             // Move the rectangle right
@@ -56,15 +74,18 @@ public class GamePanel extends JPanel implements KeyListener {
     	if (keyToMove.getKeyCode() == KeyEvent.VK_UP) {
     			// Move the rectangle up
     		snakeHead.moveY(-1);
+    		
             this.repaint();
         } else if (keyToMove.getKeyCode() == KeyEvent.VK_DOWN) {
             // Move the rectangle down
         	snakeHead.moveY(1);
             this.repaint();
     	}
+    	
+    	
     }
     
-       
+    
     @Override
     public void keyReleased(KeyEvent e) {
     }
@@ -75,10 +96,12 @@ public class GamePanel extends JPanel implements KeyListener {
 	}
 	
 	
-	//Uma classe chamada Movement
+	//
 	boolean isTheFirstMovement = true;
     KeyEvent keyToMove;
-    int movimentSpeedMilli = 500;
+    int incrementX;
+    int incrementY;
+    int movimentSpeedMilli = 300;
 	@Override
 	public void keyPressed(KeyEvent e) {
 		keyToMove = e;
@@ -88,7 +111,25 @@ public class GamePanel extends JPanel implements KeyListener {
 	    	    @Override
 	    	    public void run(){
 	    	    	moveFromKey();
-	    	    	Movement.isTouchingApple(snakeHead, appleList);
+	    	    	Apple touchedApple = Movement.touchingApple(snakeHead, appleList);
+	    	    	if(touchedApple != null) {
+	    	    		appleList.remove(touchedApple);
+	    	    		Color partColor = Color.DARK_GRAY;
+	    	    		if(appleList.size() % 2 ==0) {
+	    	    			partColor = Color.blue;
+	    	    		}
+	    	    		snakeBodyList.add(new SnakeBody(
+	    	    				touchedApple.getX() + snakeBodyList.size()*incrementX,
+	    	    				touchedApple.getY() + snakeBodyList.size()*incrementY,
+	    	    				partColor)
+	    	    		);
+	    	    	}
+	    	    	
+	    	    	if(appleList.size() == 0) {
+	    	    		for(int i = 0; i < 5; i++) {
+	    	    			createApple();
+	    	    		}
+	    	    	}
 	    	    }
 	    	},0,movimentSpeedMilli);
 		}  

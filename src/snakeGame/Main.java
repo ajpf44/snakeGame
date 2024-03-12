@@ -10,13 +10,16 @@ public class Main {
         GamePanel panel = new GamePanel();
 
         frame.add(panel);
-        panel.addKeyListener(panel);
-        
         panel.setFocusable(true);
         
         System.out.println("O jogo vai começar");
         for( int i = 0; i < 5; ++i) {
         	panel.createApple();
         }
+        
+        frame.setVisible(true);
+        //panel.addKeyListener(panel); ON LINUX THIS WILL WORK
+        frame.addKeyListener(panel);
+
 	}
 }
