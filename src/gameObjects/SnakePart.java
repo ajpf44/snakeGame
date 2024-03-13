@@ -3,6 +3,8 @@ package gameObjects;
 import java.awt.Color;
 import java.awt.Graphics;
 
+import gameInterface.GamePanel;
+
 public abstract class SnakePart {
 	protected int posX=0, posY= 0;
 	protected Color color;
@@ -28,9 +30,11 @@ public abstract class SnakePart {
 	
 	public void moveX(int sinal) {
 		int newPosX = posX + (sinal * Movement.speed);
-		//Na volta testar o getWidth e o getHeight;
+		
 		if( newPosX >= 0 && newPosX <= 800-70) {
 			posX = newPosX;
+		}else {
+			GamePanel.gameStatus = "Game Over";
 		}
 	}
 	public void moveY(int sinal) {
@@ -38,6 +42,8 @@ public abstract class SnakePart {
 		
 		if( newPosY <= 800-70 && newPosY >= 0) {
 			posY = newPosY;
+		}else {
+			GamePanel.gameStatus = "Game Over";
 		}
 		
 	}

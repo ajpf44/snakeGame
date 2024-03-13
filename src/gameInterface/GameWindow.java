@@ -4,7 +4,7 @@ package gameInterface;
 import javax.swing.JFrame;
 
 public class GameWindow {
-	public  int width = 800;
+	public  int width = 900;
 	public  int height = 800;
 	
 	public JFrame createWindow() {

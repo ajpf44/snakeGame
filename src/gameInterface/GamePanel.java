@@ -1,7 +1,7 @@
 package gameInterface;
 
 import java.awt.Color;
-
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -24,6 +24,7 @@ public class GamePanel extends JPanel implements KeyListener{
 	
 	ArrayList<Apple> appleList = new ArrayList<Apple>();
 	ArrayList<SnakeBody> snakeBodyList = new ArrayList<SnakeBody>();
+	public static String gameStatus = "Jogando";
 	
 	public void createApple() {
 		int x = (int) (Math.random() * 15);
@@ -43,7 +44,15 @@ public class GamePanel extends JPanel implements KeyListener{
 	    for(SnakeBody sb : snakeBodyList) {
 	    	sb.paintComponent(g);
 	    }
-	     // Draw a rectangle with specific coordinates and dimensions
+	    g.setFont(new Font("Arial", Font.BOLD, 20));
+	    g.setColor(Color.black);
+	    g.drawString("Pontos", 770, 60);
+	    g.drawString(String.valueOf(snakeBodyList.size()), 780, 80);
+	    g.drawString(gameStatus, 770, 20);
+	}
+	
+	public void endGame() {
+		t.cancel();
 	}
     
 	//Talvez passar essa função para o Movement
@@ -102,20 +111,24 @@ public class GamePanel extends JPanel implements KeyListener{
     int incrementX;
     int incrementY;
     int movimentSpeedMilli = 300;
+    Timer t;
 	@Override
 	public void keyPressed(KeyEvent e) {
 		keyToMove = e;
 		if( isTheFirstMovement) {
-			Timer t = new Timer();
+			t = new Timer();
 	    	t.scheduleAtFixedRate(new TimerTask(){
 	    	    @Override
 	    	    public void run(){
 	    	    	moveFromKey();
 	    	    	Apple touchedApple = Movement.touchingApple(snakeHead, appleList);
+	    	    	if(GamePanel.gameStatus == "Game Over") {
+	    	    		endGame();
+	    	    	}
 	    	    	if(touchedApple != null) {
 	    	    		appleList.remove(touchedApple);
 	    	    		Color partColor = Color.DARK_GRAY;
-	    	    		if(appleList.size() % 2 ==0) {
+	    	    		if(snakeBodyList.size() % 2 ==0) {
 	    	    			partColor = Color.blue;
 	    	    		}
 	    	    		snakeBodyList.add(new SnakeBody(
