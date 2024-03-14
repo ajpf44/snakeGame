@@ -15,4 +15,15 @@ public class Movement {
 		
 		return touchedApple;
 	}
+	
+	public static boolean isTouchingSnake(SnakeHead sHead, ArrayList<SnakeBody> bList) {
+		boolean isTouching = false;
+        for (SnakeBody body :bList) {
+            if (body.getX() == sHead.getX() && body.getY() == sHead.getY()) {
+                isTouching = true;
+            }
+        }
+        
+        return isTouching;
+	}
 }

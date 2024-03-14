@@ -36,7 +36,7 @@ public class GamePanel extends JPanel implements KeyListener{
 	@Override
 	public void paintComponent(Graphics g) {
 	    super.paintComponent(g);
-	    snakeHead.paintComponent(g);
+	    
 	    
 	    for(Apple a : appleList) {
             a.paintComponent(g);
@@ -49,6 +49,10 @@ public class GamePanel extends JPanel implements KeyListener{
 	    g.drawString("Pontos", 770, 60);
 	    g.drawString(String.valueOf(snakeBodyList.size()), 780, 80);
 	    g.drawString(gameStatus, 770, 20);
+	    g.fillRect(750, 0, 5,755);
+	    g.fillRect(0, 750, 750,5);
+	    
+	    snakeHead.paintComponent(g);
 	}
 	
 	public void endGame() {
@@ -122,9 +126,15 @@ public class GamePanel extends JPanel implements KeyListener{
 	    	    public void run(){
 	    	    	moveFromKey();
 	    	    	Apple touchedApple = Movement.touchingApple(snakeHead, appleList);
+	    	    	
+	    	    	if(Movement.isTouchingSnake(snakeHead, snakeBodyList)) {
+	    	    		GamePanel.gameStatus = "Game Over";
+	    	    	}
+	    	    	
 	    	    	if(GamePanel.gameStatus == "Game Over") {
 	    	    		endGame();
 	    	    	}
+	    	    	
 	    	    	if(touchedApple != null) {
 	    	    		appleList.remove(touchedApple);
 	    	    		Color partColor = Color.DARK_GRAY;
