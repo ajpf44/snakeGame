@@ -18,8 +18,12 @@ public class Main {
         }
         
         frame.setVisible(true);
-        //panel.addKeyListener(panel); ON LINUX THIS WILL WORK
-        frame.addKeyListener(panel);
-
+        
+        String osName = System.getProperty("os.name");
+        if(osName.equals("Linux")){
+            panel.addKeyListener(panel); //ON LINUX THIS WILL WORK
+        }else{
+            frame.addKeyListener(panel);
+        }
 	}
 }

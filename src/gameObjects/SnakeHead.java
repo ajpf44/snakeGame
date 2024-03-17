@@ -6,4 +6,6 @@ public class SnakeHead extends SnakePart {
 		super(initialX, initialY, new Color(134, 168, 9));
 		// TODO Auto-generated constructor stub
 	}
+
+	
 }
